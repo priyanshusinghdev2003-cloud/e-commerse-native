@@ -5,6 +5,8 @@ import { connectDB } from "./db/index.js";
 import { clerkMiddleware } from "@clerk/express";
 import { clerkWebhook } from "./controllers/webhooks.js";
 import makeAdmin from "./scripts/makeAdmin.js";
+import productRoutes from "./routes/product.route.js";
+import cartRoutes from "./routes/cart.route.js";
 
 const app = express();
 await connectDB();
@@ -21,6 +23,9 @@ const port = process.env.PORT || 3000;
 app.get("/", (req: Request, res: Response) => {
   res.send("Server is Live!");
 });
+
+app.use("/api/products", productRoutes);
+app.use("/api/cart", cartRoutes);
 
 await makeAdmin();
 
