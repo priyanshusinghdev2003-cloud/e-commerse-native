@@ -58,7 +58,6 @@ export const createProduct = async (req: Request, res: Response) => {
     let images: string[] = [];
 
     // handle file uploads
-
     if (req.files && (req.files as any).length > 0) {
       const uploadPromises = (req.files as any).map((file: any) => {
         return new Promise<string>((resolve, reject) => {
