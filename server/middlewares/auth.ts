@@ -8,6 +8,7 @@ export const protect = async (
 ) => {
   try {
     const { userId } = await req.auth();
+
     if (!userId) {
       return res.status(401).json({
         message: "Unauthorized",

@@ -12,10 +12,15 @@ import { protect, authorize } from "../middlewares/auth.js";
 const router = express.Router();
 
 router.route("/").get(getProducts);
+router.post(
+  "/",
+  protect,
+  authorize("admin"),
+  upload.array("images", 5),
+  createProduct,
+);
+
 router.route("/:id").get(getProduct);
-router
-  .route("/")
-  .post(protect, authorize("admin"), upload.array("images", 5), createProduct);
 router
   .route("/:id")
   .put(upload.array("images", 5), protect, authorize("admin"), updateProduct);

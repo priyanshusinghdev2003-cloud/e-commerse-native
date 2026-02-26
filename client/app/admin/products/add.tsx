@@ -76,30 +76,31 @@ export default function AddProduct() {
         stock: stock || "0",
         category,
         sizes,
-        isFeatured: isFeatured.toString(),
+        isFeatured: String(isFeatured),
       };
 
       Object.entries(fields).forEach(([key, value]) => {
         formData.append(key, value);
       });
 
+      // images
       for (const [i, uri] of images.entries()) {
         const filename = `image-${i}.jpg`;
         formData.append("images", {
           uri,
-          type: "image/jpeg",
           name: filename,
+          type: "image/jpeg",
         } as any);
       }
-      console.log(token);
       const { data } = await api.post("/products", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
         },
       });
 
-      if (!data?.success) {
-        throw new Error(data?.message || "Failed to add product");
+      if (!data.success) {
+        throw new Error(data.message || "Failed to add product");
       }
       Toast.show({
         type: "success",

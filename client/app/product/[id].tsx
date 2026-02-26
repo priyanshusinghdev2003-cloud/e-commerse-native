@@ -13,11 +13,11 @@ import { useEffect, useState } from "react";
 import { Product } from "@/constants/types";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
-import { dummyProducts } from "@/assets/assets";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS } from "@/constants";
 import { Ionicons } from "@expo/vector-icons";
 import Toast from "react-native-toast-message";
+import api from "@/constants/api";
 
 const { width } = Dimensions.get("window");
 
@@ -34,9 +34,19 @@ const ProductDetails = () => {
   const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
 
   const fetchProduct = async () => {
-    const found: any = dummyProducts.find((p) => p._id === id);
-    setProduct(found ?? null);
-    setLoading(false);
+    try {
+      const { data } = await api.get(`/products/${id}`);
+      setProduct(data.data);
+    } catch (error) {
+      console.log(error);
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Failed to fetch product",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
