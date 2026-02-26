@@ -1,4 +1,10 @@
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  ActivityIndicator,
+} from "react-native";
 import React from "react";
 import { useCart } from "@/context/CartContext";
 import { useRouter } from "expo-router";
@@ -7,7 +13,8 @@ import Header from "@/components/Header";
 import CartItem from "@/components/CartItem";
 
 export default function Cart() {
-  const { cartItems, cartTotal, removeFromCart, updateQuantity } = useCart();
+  const { cartItems, cartTotal, removeFromCart, updateQuantity, isLoading } =
+    useCart();
   const router = useRouter();
 
   const shipping = 2.0;
@@ -61,7 +68,11 @@ export default function Cart() {
               className="bg-primary py-4 rounded-full items-center"
               onPress={() => router.push("/checkout")}
             >
-              <Text className="text-white font-bold text-base">Checkout</Text>
+              {isLoading ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <Text className="text-white font-bold text-base">Checkout</Text>
+              )}
             </TouchableOpacity>
           </View>
         </>

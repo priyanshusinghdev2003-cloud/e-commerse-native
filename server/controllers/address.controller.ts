@@ -31,6 +31,7 @@ export const createAddress = async (req: Request, res: Response) => {
         { $set: { isDefault: false } },
       );
     }
+
     const newAddress = await Address.create({
       user: req.user._id,
       type,
@@ -41,6 +42,7 @@ export const createAddress = async (req: Request, res: Response) => {
       country,
       isDefault: isDefault || false,
     });
+
     res.status(201).json({
       data: newAddress,
       success: true,
